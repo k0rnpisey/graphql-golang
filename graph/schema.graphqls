@@ -1,0 +1,47 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+enum CliqueType {
+  "People who are elite with parents having money"
+  KOOKS
+  "People who desperate to move up the social ladder to become new versions of themselves and establish new beginnings"
+  POGUES
+}
+
+type Character {
+  id: ID!
+  name: String!
+  isHero: Boolean!
+  cliqueType: CliqueType!
+}
+
+input CharacterInput {
+  name: String!
+  id: String
+  isHero: Boolean
+  cliqueType: CliqueType!
+}
+
+type Mutation {
+  upsertCharacter(input: CharacterInput!): Character! @hasRole(role: ADMIN)
+}
+
+type Query {
+  character(id:ID!): Character
+  characters(cliqueType:CliqueType!): [Character!]
+}
+
+directive @hasRole(role: Role!) on FIELD_DEFINITION
+
+enum Role {
+  ADMIN
+  REVIEWER
+  USER
+}
+
+type User {
+  id: ID!
+  name: String!
+  friends: [User]
+}
